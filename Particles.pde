@@ -10,7 +10,7 @@ class Particles
     _acceleration = new PVector(0,0, 0);
     
     
-    _lifeSpan = 100;
+    _lifeSpan = 0;
   }
   
   void Display()
