@@ -1,7 +1,7 @@
 //Unit Project
 import queasycam.*;
 
-int amountOfThings = 300;
+float amountOfThings = 300, thing = 3.14;
 PVector pAcceleration, pVelocity, pPosition;
 ArrayList<Particles> particles; ArrayList <Surfaces> surfaces;
 
@@ -12,31 +12,41 @@ void setup()
   fullScreen(P3D);
   particles = new ArrayList<Particles>();
   surfaces = new ArrayList<Surfaces>();
-  
   noCursor();
   cam = new QueasyCam(this);
   cam.speed = 3;
   cam.sensitivity = 1;
-  perspective(PI/2.25, (float)width/height, 0.01, 10000);
+  perspective(PI/thing, (float)width/height, 0.01, 10000);
   
   for(int i = 0; i < amountOfThings; i++)
   {
-    particles.add(new Particles(0, 0, 0));
+    particles.add(new Particles(random(-500,500),0,random(-500,500)));
   }
   
-  for(int i = 0; i < 1; i++)
+  color c1 = color(2, 32, 46);
+  color c2 = color(1, 46, 62);
+  color c3 = color(2, 40, 54);
+  color c4 = color(23, 118, 105);
+  
+  surfaces.add(new Surfaces(0, 100, 0, 1000, 50, 1000, c1));
+  surfaces.add(new Surfaces(0, -900, 475, 1000, 2000, 50, c2));
+  surfaces.add(new Surfaces(0, -900, -475, 1000, 2000, 50, c2));
+  surfaces.add(new Surfaces(475, -900, 0, 50, 2000, 1000, c3));
+  surfaces.add(new Surfaces(-475, -900, 0, 50, 2000, 1000, c3));
+  
+  for (int i = 0; i < 3; i++)
   {
-    surfaces.add(new Surfaces(1, 100, 1, 1000, 50, 1000));
+    surfaces.add(new Surfaces(0, i * -300, 375, 150, 150, 150, c4));
   }
-  
+ 
   pAcceleration = new PVector(0, 0.1, 0);
   pVelocity = new PVector(1,1,1);
   pPosition = new PVector(1,1,1);
 }
 
 void draw()
-{
-  background(255);
+{ 
+  background(0);
   
   Controls();
   World();  
@@ -62,16 +72,32 @@ void Controls()
 
 void World()
 {
-  for(int i = 0; i < amountOfThings; i ++)
+  
+  if (random(1) <= 1)
   {
-    Particles entity = particles.get(i);
-    entity.Display();
+    particles.add(new Particles (random(-500,500),0,random(-500,500)));
   }
   
-  stroke(1);
+  for(int i = 0; i < particles.size(); i++)
+  {
+    Particles entity = particles.get(i);
+        
+    if (entity._isADead())
+    {
+      particles.remove(i);
+    }
+    else
+    {
+   
+    }
+    
+    entity.Display();
+ 
+  }
+  
   fill(100);
   
-  for (int i = 0; i < 1; i ++)
+  for (int i = 0; i < surfaces.size(); i ++)
   {
     Surfaces entity = surfaces.get(i);
     entity.Display();
